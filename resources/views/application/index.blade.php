@@ -10,8 +10,11 @@
         </ul>
     </div>
 @endif
+@can ('create-application', $applications)
 <a href="/application/create">create</a>
+@endcan
 @if ($applications)
+@can('view-applications', $applications)
 <table>
 @foreach ($applications as $app)
 <tr>
@@ -24,5 +27,6 @@
 </tr>
 @endforeach
 </table>
+@endcan
 @endif
 @endsection

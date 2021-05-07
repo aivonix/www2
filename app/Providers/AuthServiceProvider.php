@@ -15,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        // Application::class => ApplicationPolicy::class,
     ];
 
     /**
@@ -32,6 +33,14 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
         
+        Gate::define('view-applications', function($user){
+            $roles = array_column($user->roles->toArray(), 'role');
+            if(count(array_intersect([env('ROLE_EMPLOYEE', '')], $roles)) > 0){
+                return false;
+            }
+            return true;
+        });
+
         Gate::define('create-application', function($user){
             $roles = array_column($user->roles->toArray(), 'role');
             if(count(array_intersect([env('ROLE_EMPLOYEE', '')], $roles)) > 0){
